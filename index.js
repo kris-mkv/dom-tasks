@@ -51,3 +51,21 @@ function addTaskTemplateInTasks() {
 }
 
 addTaskTemplateInTasks();
+
+const formTask = document.querySelector('.create-task-block');
+const fieldOfTask = formTask.querySelector('.create-task-block__input');
+
+formTask.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const valueInField = fieldOfTask.value;
+  if (valueInField) {
+    tasks.push({
+      id: String(Date.now()),
+      completed: false,
+      text: valueInField,
+    });
+  }
+
+  addTaskTemplateInTasks();
+});
