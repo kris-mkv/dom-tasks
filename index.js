@@ -153,3 +153,29 @@ tasksList.addEventListener('click', (e) => {
     modalOverlay.classList.remove('modal-overlay_hidden');
   }
 });
+
+const changeTheme = (bodyBackground, taskFontColor, buttonBorder) => {
+  document.body.style.background = bodyBackground;
+  document.querySelectorAll('.task-item').forEach((task) => {
+    task.style.color = taskFontColor;
+  });
+  document.querySelectorAll('button').forEach((btn) => {
+    btn.style.border = buttonBorder;
+  });
+};
+
+let isDarkTheme = false;
+
+document.addEventListener('keydown', (e) => {
+  const { code } = e;
+  if (code === 'Tab') {
+    e.preventDefault();
+
+    isDarkTheme = !isDarkTheme;
+    if (isDarkTheme) {
+      changeTheme('#24292E', '#ffffff', '1px solid #ffffff');
+    } else {
+      changeTheme('initial', 'initial', 'none');
+    }
+  }
+});
