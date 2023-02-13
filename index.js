@@ -147,8 +147,8 @@ tasksList.addEventListener('click', (e) => {
   const { target } = e;
   const isDeleteBtn = target.closest('.delete-button');
   if (isDeleteBtn) {
-    task = target.closest('.task-item');
-    taskId = task.dataset.taskId;
+    const task = target.closest('.task-item');
+    const taskId = task.dataset.taskId;
     dataObj = { task, taskId };
     modalOverlay.classList.remove('modal-overlay_hidden');
   }
