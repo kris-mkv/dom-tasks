@@ -79,13 +79,12 @@ const checkValueOfFieldOnValidation = (value) => {
 formTask.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const valueInField = fieldOfTask.value.trim();
-
   const errorMessageBlockFromDom = document.querySelector(
     '.error-message-block'
   );
   errorMessageBlockFromDom?.remove();
 
+  const valueInField = fieldOfTask.value.trim();
   if (!checkValueOfFieldOnValidation(valueInField)) {
     return;
   }
@@ -97,4 +96,60 @@ formTask.addEventListener('submit', (e) => {
   });
 
   addTaskTemplateInTasks();
+});
+
+function createModalOverlay() {
+  const modalOverlay = `
+  <div class="modal-overlay modal-overlay_hidden">
+    <div class="delete-modal">
+      <h3 class="delete-modal__question">
+        Вы действительно хотите удалить эту задачу?
+      </h3>
+      <div class="delete-modal__buttons">
+        <button class="delete-modal__button delete-modal__cancel-button">
+          Отмена
+        </button>
+        <button class="delete-modal__button delete-modal__confirm-button">
+          Удалить
+        </button>
+      </div>
+    </div>
+  </div>
+  `;
+  tasksList.insertAdjacentHTML('afterend', modalOverlay);
+}
+
+createModalOverlay();
+
+const modalOverlay = document.querySelector('.modal-overlay');
+let dataObj = {};
+
+modalOverlay.addEventListener('click', (e) => {
+  const { target } = e;
+  const cancelBtn = target.closest('.delete-modal__cancel-button');
+  const confirmBtn = target.closest('.delete-modal__confirm-button');
+  if (cancelBtn) {
+    modalOverlay.classList.add('modal-overlay_hidden');
+  }
+  if (confirmBtn) {
+    modalOverlay.classList.add('modal-overlay_hidden');
+    deleteTask(dataObj.task, dataObj.taskId);
+  }
+});
+
+function deleteTask(task, taskId) {
+  const taskIndex = tasks.findIndex((item) => item.id === taskId);
+  tasks.splice(taskIndex, 1);
+  task.remove();
+}
+
+tasksList.addEventListener('click', (e) => {
+  const { target } = e;
+  const isDeleteBtn = target.closest('.delete-button');
+  if (isDeleteBtn) {
+    task = target.closest('.task-item');
+    taskId = task.dataset.taskId;
+    dataObj = { task, taskId };
+    modalOverlay.classList.remove('modal-overlay_hidden');
+  }
 });
